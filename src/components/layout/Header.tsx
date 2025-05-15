@@ -1,5 +1,5 @@
 import React from 'react';
-import { Briefcase as BriefcaseBusiness, BellRing, User } from 'lucide-react';
+import { Briefcase, BellRing, User } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
@@ -7,7 +7,7 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <BriefcaseBusiness className="h-8 w-8 text-indigo-600" />
+            <Briefcase className="h-8 w-8 text-indigo-600" />
             <span className="ml-2 text-xl font-semibold text-gray-900">PhindMe</span>
           </div>
           
