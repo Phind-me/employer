@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Filter, Building2 } from 'lucide-react';
 import { useRecruiters } from '../../contexts/RecruiterContext';
 
 const RecruitersPage: React.FC = () => {
   const { recruiters } = useRecruiters();
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredRecruiters = recruiters.filter(recruiter =>
+    recruiter.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    recruiter.company.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
@@ -26,6 +34,8 @@ const RecruitersPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search recruiters..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
@@ -38,10 +48,14 @@ const RecruitersPage: React.FC = () => {
 
         <div className="p-6">
           <div className="space-y-4">
-            {recruiters.map((recruiter) => {
+            {filteredRecruiters.map((recruiter) => {
               const successRate = Math.round((recruiter.hireCount / recruiter.submissionCount) * 100) || 0;
               return (
-                <div key={recruiter.id} className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors">
+                <div 
+                  key={recruiter.id} 
+                  className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors"
+                  onClick={() => navigate(`/recruiters/${recruiter.id}`)}
+                >
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="text-lg font-medium text-gray-900">{recruiter.name}</h3>
@@ -65,8 +79,8 @@ const RecruitersPage: React.FC = () => {
                       <p className="mt-1 font-medium text-gray-900">{recruiter.hireCount}</p>
                     </div>
                     <div>
-                      <p className="text-gray-500">Success Rate</p>
-                      <p className="mt-1 font-medium text-gray-900">{successRate}%</p>
+                      <p className="text-gray-500">Active Jobs</p>
+                      <p className="mt-1 font-medium text-gray-900">{recruiter.activeJobs}</p>
                     </div>
                   </div>
                 </div>

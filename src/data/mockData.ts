@@ -1,4 +1,4 @@
-import { Job, Candidate, Recruiter } from '../types';
+import { Job, Candidate, Recruiter, DashboardMetrics, Education, Experience, Skill, Note, JobSkill } from '../types';
 
 export const jobs: Job[] = [
   {
@@ -9,6 +9,62 @@ export const jobs: Job[] = [
     closingDate: '2025-04-15',
     status: 'open',
     candidateCount: 5,
+    description: 'We are seeking an experienced Senior Software Engineer to join our growing engineering team. The ideal candidate will have a strong background in full-stack development and a passion for building scalable, high-performance applications.',
+    responsibilities: [
+      'Design and implement scalable backend services using Node.js and TypeScript',
+      'Build responsive and accessible frontend applications using React',
+      'Lead technical design discussions and mentor junior developers',
+      'Collaborate with product managers to define technical requirements',
+      'Participate in code reviews and maintain high code quality standards'
+    ],
+    requirements: [
+      'Bachelor\'s degree in Computer Science or related field',
+      '5+ years of professional software development experience',
+      'Strong proficiency in JavaScript/TypeScript and modern frontend frameworks',
+      'Experience with cloud platforms (AWS, GCP, or Azure)',
+      'Excellent problem-solving and communication skills'
+    ],
+    skills: [
+      {
+        id: '1',
+        name: 'TypeScript',
+        yearsRequired: 3,
+        isRequired: true
+      },
+      {
+        id: '2',
+        name: 'React',
+        yearsRequired: 4,
+        isRequired: true
+      },
+      {
+        id: '3',
+        name: 'Node.js',
+        yearsRequired: 3,
+        isRequired: true
+      },
+      {
+        id: '4',
+        name: 'AWS',
+        yearsRequired: 2,
+        isRequired: false
+      },
+      {
+        id: '5',
+        name: 'GraphQL',
+        yearsRequired: 1,
+        isRequired: false
+      }
+    ],
+    salary: {
+      min: 120000,
+      max: 180000,
+      currency: 'USD'
+    },
+    employmentType: 'full-time',
+    workplaceType: 'remote',
+    postedDate: '2025-02-15',
+    hiringManager: 'Sarah Thompson'
   },
   {
     id: '2',
@@ -57,6 +113,107 @@ export const jobs: Job[] = [
   },
 ];
 
+const mockEducation: Education[] = [
+  {
+    id: '1',
+    school: 'Stanford University',
+    degree: 'Master of Science',
+    field: 'Computer Science',
+    startDate: '2020-09-01',
+    endDate: '2022-06-01',
+    description: 'Specialized in Machine Learning and Distributed Systems',
+  },
+  {
+    id: '2',
+    school: 'University of California, Berkeley',
+    degree: 'Bachelor of Science',
+    field: 'Computer Science',
+    startDate: '2016-09-01',
+    endDate: '2020-05-01',
+    description: 'Minor in Mathematics, Dean\'s List all semesters',
+  },
+];
+
+const mockExperience: Experience[] = [
+  {
+    id: '1',
+    company: 'Google',
+    position: 'Software Engineer',
+    location: 'Mountain View, CA',
+    startDate: '2022-07-01',
+    endDate: '2024-02-01',
+    current: false,
+    description: 'Led development of cloud-native applications using Go and Kubernetes. Improved system performance by 40% through optimization initiatives.',
+  },
+  {
+    id: '2',
+    company: 'Meta',
+    position: 'Software Engineering Intern',
+    location: 'Menlo Park, CA',
+    startDate: '2021-05-01',
+    endDate: '2021-08-01',
+    current: false,
+    description: 'Developed and deployed machine learning models for content recommendation. Collaborated with cross-functional teams to improve user engagement.',
+  },
+];
+
+const mockSkills: Skill[] = [
+  {
+    id: '1',
+    name: 'Python',
+    level: 'expert',
+    yearsOfExperience: 6,
+  },
+  {
+    id: '2',
+    name: 'React',
+    level: 'advanced',
+    yearsOfExperience: 4,
+  },
+  {
+    id: '3',
+    name: 'Node.js',
+    level: 'intermediate',
+    yearsOfExperience: 2,
+  },
+  {
+    id: '4',
+    name: 'Kubernetes',
+    level: 'advanced',
+    yearsOfExperience: 3,
+  },
+  {
+    id: '5',
+    name: 'Machine Learning',
+    level: 'intermediate',
+    yearsOfExperience: 2,
+  },
+];
+
+const mockNotes: Note[] = [
+  {
+    id: '1',
+    content: 'Excellent technical skills demonstrated during coding challenge. Strong problem-solving abilities and clean code practices.',
+    createdAt: '2024-03-15T14:30:00Z',
+    createdBy: 'Technical Interviewer',
+    type: 'interview',
+  },
+  {
+    id: '2',
+    content: 'Great cultural fit. Shows strong leadership potential and excellent communication skills.',
+    createdAt: '2024-03-20T16:00:00Z',
+    createdBy: 'Hiring Manager',
+    type: 'feedback',
+  },
+  {
+    id: '3',
+    content: 'Candidate has expressed strong interest in our AI initiatives and has relevant experience in the field.',
+    createdAt: '2024-03-10T11:00:00Z',
+    createdBy: 'Recruiter',
+    type: 'general',
+  },
+];
+
 export const candidates: Candidate[] = [
   {
     id: '1',
@@ -65,6 +222,17 @@ export const candidates: Candidate[] = [
     recruiterId: '1',
     status: 'in-progress',
     submissionDate: '2025-03-01',
+    email: 'john.smith@example.com',
+    phone: '+1 (555) 123-4567',
+    location: 'San Francisco, CA',
+    education: mockEducation,
+    experience: mockExperience,
+    skills: mockSkills,
+    notes: mockNotes,
+    resumeUrl: 'https://example.com/resume.pdf',
+    portfolioUrl: 'https://johnsmith.dev',
+    linkedinUrl: 'https://linkedin.com/in/johnsmith',
+    githubUrl: 'https://github.com/johnsmith',
   },
   {
     id: '2',
@@ -73,102 +241,14 @@ export const candidates: Candidate[] = [
     recruiterId: '2',
     status: 'submitted',
     submissionDate: '2025-03-05',
-  },
-  {
-    id: '3',
-    name: 'Michael Brown',
-    jobId: '1',
-    recruiterId: '1',
-    status: 'hired',
-    submissionDate: '2025-02-15',
-  },
-  {
-    id: '4',
-    name: 'Sarah Williams',
-    jobId: '1',
-    recruiterId: '3',
-    status: 'rejected',
-    submissionDate: '2025-02-20',
-  },
-  {
-    id: '5',
-    name: 'David Miller',
-    jobId: '1',
-    recruiterId: '2',
-    status: 'in-progress',
-    submissionDate: '2025-03-10',
-  },
-  {
-    id: '6',
-    name: 'Jessica Davis',
-    jobId: '2',
-    recruiterId: '3',
-    status: 'in-progress',
-    submissionDate: '2025-03-02',
-  },
-  {
-    id: '7',
-    name: 'Thomas Wilson',
-    jobId: '2',
-    recruiterId: '1',
-    status: 'submitted',
-    submissionDate: '2025-03-08',
-  },
-  {
-    id: '8',
-    name: 'Jennifer Garcia',
-    jobId: '2',
-    recruiterId: '2',
-    status: 'hired',
-    submissionDate: '2025-02-25',
-  },
-  {
-    id: '9',
-    name: 'Robert Martinez',
-    jobId: '5',
-    recruiterId: '3',
-    status: 'submitted',
-    submissionDate: '2025-03-12',
-  },
-  {
-    id: '10',
-    name: 'Patricia Anderson',
-    jobId: '5',
-    recruiterId: '1',
-    status: 'in-progress',
-    submissionDate: '2025-03-06',
-  },
-  {
-    id: '11',
-    name: 'James Taylor',
-    jobId: '6',
-    recruiterId: '2',
-    status: 'submitted',
-    submissionDate: '2025-03-15',
-  },
-  {
-    id: '12',
-    name: 'Linda Thomas',
-    jobId: '6',
-    recruiterId: '3',
-    status: 'in-progress',
-    submissionDate: '2025-03-10',
-  },
-  {
-    id: '13',
-    name: 'Richard Jackson',
-    jobId: '6',
-    recruiterId: '1',
-    status: 'hired',
-    submissionDate: '2025-02-28',
-  },
-  {
-    id: '14',
-    name: 'Elizabeth White',
-    jobId: '6',
-    recruiterId: '2',
-    status: 'rejected',
-    submissionDate: '2025-03-01',
+    email: 'emily.johnson@example.com',
+    phone: '+1 (555) 234-5678',
+    location: 'New York, NY',
+    education: mockEducation.slice(1),
+    experience: mockExperience.slice(1),
+    skills: mockSkills.slice(0, 3),
+    notes: mockNotes.slice(1),
+    linkedinUrl: 'https://linkedin.com/in/emilyjohnson',
   },
 ];
 

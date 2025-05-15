@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, Search, Filter } from 'lucide-react';
 import { useJobs } from '../../contexts/JobContext';
+import { useSubmissions } from '../../contexts/SubmissionContext';
 import { calculateDaysRemaining } from '../../data/mockData';
+import CandidatePipeline from '../shared/CandidatePipeline';
 
 const JobsPage: React.FC = () => {
   const { jobs } = useJobs();
+  const { submissions } = useSubmissions();
+  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredJobs = jobs.filter(job =>
+    job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    job.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    job.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="space-y-6">
@@ -27,6 +39,8 @@ const JobsPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="Search jobs..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               />
             </div>
@@ -39,24 +53,71 @@ const JobsPage: React.FC = () => {
 
         <div className="p-6">
           <div className="space-y-4">
-            {jobs.map((job) => {
+            {filteredJobs.map((job) => {
               const daysRemaining = calculateDaysRemaining(job.closingDate);
+              const jobSubmissions = submissions.filter(s => s.jobId === job.id);
+              const submittedCount = jobSubmissions.filter(s => s.status === 'submitted').length;
+              const inProgressCount = jobSubmissions.filter(s => s.status === 'in-progress').length;
+              const hiredCount = jobSubmissions.filter(s => s.status === 'hired').length;
+              const rejectedCount = jobSubmissions.filter(s => s.status === 'rejected').length;
+
               return (
-                <div key={job.id} className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors">
+                <div 
+                  key={job.id} 
+                  className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors"
+                  onClick={() => navigate(`/jobs/${job.id}`)}
+                >
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="text-lg font-medium text-gray-900">{job.title}</h3>
                       <p className="mt-1 text-sm text-gray-500">{job.department} • {job.location}</p>
+                      {job.salary && (
+                        <p className="mt-1 text-sm text-gray-500">
+                          {new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: job.salary.currency,
+                            maximumFractionDigits: 0
+                          }).format(job.salary.min)} - {new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: job.salary.currency,
+                            maximumFractionDigits: 0
+                          }).format(job.salary.max)}
+                        </p>
+                      )}
                     </div>
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      job.status === 'open' ? 'bg-green-100 text-green-800' :
+                      job.status === 'filled' ? 'bg-blue-100 text-blue-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
                       {job.status === 'open' ? 'Active' : job.status.charAt(0).toUpperCase() + job.status.slice(1)}
                     </span>
                   </div>
                   <div className="mt-4 flex items-center space-x-4 text-sm text-gray-500">
                     <span>{job.candidateCount} candidates</span>
                     <span>•</span>
-                    <span>Closes in {daysRemaining} days</span>
+                    <span>Posted {new Date(job.postedDate).toLocaleDateString()}</span>
+                    <span>•</span>
+                    <span className={`${
+                      daysRemaining <= 7 ? 'text-red-600' :
+                      daysRemaining <= 14 ? 'text-amber-600' :
+                      'text-gray-500'
+                    }`}>
+                      Closes in {daysRemaining} days
+                    </span>
                   </div>
+                  {job.candidateCount > 0 && (
+                    <div className="mt-4">
+                      <CandidatePipeline
+                        submitted={submittedCount}
+                        inProgress={inProgressCount}
+                        hired={hiredCount}
+                        rejected={rejectedCount}
+                        showDetails={false}
+                        className="mt-2"
+                      />
+                    </div>
+                  )}
                 </div>
               );
             })}
