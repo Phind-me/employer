@@ -1,14 +1,14 @@
 import React from 'react';
-import SummaryMetrics from './SummaryMetrics';
-import JobsOverview from './JobsOverview';
-import CandidatesStatus from './CandidatesStatus';
-import RecruiterPerformance from './RecruiterPerformance';
-import { useJobs } from '../../contexts/JobContext';
-import { useSubmissions } from '../../contexts/SubmissionContext';
-import { useRecruiters } from '../../contexts/RecruiterContext';
-import { useDashboard } from '../../contexts/DashboardContext';
+import SummaryMetrics from '../components/dashboard/SummaryMetrics';
+import JobsOverview from '../components/dashboard/JobsOverview';
+import CandidatesStatus from '../components/dashboard/CandidatesStatus';
+import RecruiterPerformance from '../components/dashboard/RecruiterPerformance';
+import { useJobs } from '../contexts/JobContext';
+import { useSubmissions } from '../contexts/SubmissionContext';
+import { useRecruiters } from '../contexts/RecruiterContext';
+import { useDashboard } from '../contexts/DashboardContext';
 
-const Dashboard: React.FC = () => {
+const DashboardPage: React.FC = () => {
   const { jobs } = useJobs();
   const { submissions } = useSubmissions();
   const { recruiters } = useRecruiters();
@@ -39,4 +39,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

@@ -1,38 +1,45 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DashboardLayout from './components/layout/DashboardLayout';
-import Dashboard from './components/dashboard/Dashboard';
+import DashboardPage from './pages/DashboardPage';
 import JobsPage from './components/pages/JobsPage';
-import CandidatesPage from './components/pages/CandidatesPage';
+import SubmissionsPage from './components/pages/SubmissionsPage';
 import RecruitersPage from './components/pages/RecruitersPage';
 import SettingsPage from './components/pages/SettingsPage';
 import HelpPage from './components/pages/HelpPage';
+import { EmployerProvider } from './contexts/EmployerContext';
+import { JobProvider } from './contexts/JobContext';
+import { SubmissionProvider } from './contexts/SubmissionContext';
+import { RecruiterProvider } from './contexts/RecruiterContext';
+import { DashboardProvider } from './contexts/DashboardContext';
+import { TeamProvider } from './contexts/TeamContext';
 
 function App() {
-  const [currentPage, setCurrentPage] = React.useState('dashboard');
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'jobs':
-        return <JobsPage />;
-      case 'candidates':
-        return <CandidatesPage />;
-      case 'recruiters':
-        return <RecruitersPage />;
-      case 'settings':
-        return <SettingsPage />;
-      case 'help':
-        return <HelpPage />;
-      default:
-        return <Dashboard />;
-    }
-  };
-
   return (
-    <DashboardLayout onPageChange={setCurrentPage} currentPage={currentPage}>
-      {renderPage()}
-    </DashboardLayout>
+    <Router>
+      <EmployerProvider>
+        <TeamProvider>
+          <JobProvider>
+            <SubmissionProvider>
+              <RecruiterProvider>
+                <DashboardProvider>
+                  <DashboardLayout>
+                    <Routes>
+                      <Route path="/" element={<DashboardPage />} />
+                      <Route path="/jobs" element={<JobsPage />} />
+                      <Route path="/submissions" element={<SubmissionsPage />} />
+                      <Route path="/recruiters" element={<RecruitersPage />} />
+                      <Route path="/settings" element={<SettingsPage />} />
+                      <Route path="/help" element={<HelpPage />} />
+                    </Routes>
+                  </DashboardLayout>
+                </DashboardProvider>
+              </RecruiterProvider>
+            </SubmissionProvider>
+          </JobProvider>
+        </TeamProvider>
+      </EmployerProvider>
+    </Router>
   );
 }
 

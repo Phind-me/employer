@@ -1,3 +1,21 @@
+export interface Employer {
+  id: string;
+  name: string;
+  industry: string;
+  size: string;
+  location: string;
+  website: string;
+}
+
+export interface TeamMember {
+  id: string;
+  email: string;
+  name: string;
+  role: 'owner' | 'admin' | 'member';
+  status: 'active' | 'pending' | 'inactive';
+  joinedAt: string;
+}
+
 export interface Job {
   id: string;
   title: string;
@@ -8,7 +26,7 @@ export interface Job {
   candidateCount: number;
 }
 
-export interface Candidate {
+export interface Submission {
   id: string;
   name: string;
   jobId: string;

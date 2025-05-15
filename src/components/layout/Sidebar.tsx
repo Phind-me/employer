@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Briefcase, 
@@ -11,32 +12,28 @@ import {
 interface SidebarItemProps {
   icon: React.ReactNode;
   text: string;
-  active?: boolean;
-  onClick: () => void;
+  to: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, active = false, onClick }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to }) => {
   return (
-    <li 
-      className={`group px-3 py-2 rounded-md cursor-pointer ${active ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50'}`}
-      onClick={onClick}
-    >
-      <div className="flex items-center">
-        <div className={`mr-3 ${active ? 'text-indigo-600' : 'text-gray-500 group-hover:text-indigo-500'}`}>
-          {icon}
-        </div>
+    <li>
+      <NavLink
+        to={to}
+        className={({ isActive }) =>
+          `group px-3 py-2 rounded-md cursor-pointer flex items-center ${
+            isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50'
+          }`
+        }
+      >
+        <div className="mr-3">{icon}</div>
         <span className="font-medium">{text}</span>
-      </div>
+      </NavLink>
     </li>
   );
 };
 
-interface SidebarProps {
-  onPageChange: (page: string) => void;
-  currentPage: string;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ onPageChange, currentPage }) => {
+const Sidebar: React.FC = () => {
   return (
     <aside className="bg-white border-r border-gray-200 w-64 h-screen flex-shrink-0 hidden md:block">
       <div className="h-full flex flex-col">
@@ -46,38 +43,32 @@ const Sidebar: React.FC<SidebarProps> = ({ onPageChange, currentPage }) => {
               <SidebarItem 
                 icon={<LayoutDashboard size={20} />} 
                 text="Dashboard" 
-                active={currentPage === 'dashboard'}
-                onClick={() => onPageChange('dashboard')}
+                to="/"
               />
               <SidebarItem 
                 icon={<Briefcase size={20} />} 
                 text="Jobs" 
-                active={currentPage === 'jobs'}
-                onClick={() => onPageChange('jobs')}
+                to="/jobs"
               />
               <SidebarItem 
                 icon={<Users size={20} />} 
-                text="Candidates" 
-                active={currentPage === 'candidates'}
-                onClick={() => onPageChange('candidates')}
+                text="Submissions" 
+                to="/submissions"
               />
               <SidebarItem 
                 icon={<Building2 size={20} />} 
                 text="Recruiters" 
-                active={currentPage === 'recruiters'}
-                onClick={() => onPageChange('recruiters')}
+                to="/recruiters"
               />
               <SidebarItem 
                 icon={<Settings size={20} />} 
                 text="Settings" 
-                active={currentPage === 'settings'}
-                onClick={() => onPageChange('settings')}
+                to="/settings"
               />
               <SidebarItem 
                 icon={<HelpCircle size={20} />} 
                 text="Help" 
-                active={currentPage === 'help'}
-                onClick={() => onPageChange('help')}
+                to="/help"
               />
             </ul>
           </nav>

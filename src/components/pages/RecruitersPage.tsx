@@ -1,7 +1,10 @@
 import React from 'react';
 import { Search, Filter, Building2 } from 'lucide-react';
+import { useRecruiters } from '../../contexts/RecruiterContext';
 
 const RecruitersPage: React.FC = () => {
+  const { recruiters } = useRecruiters();
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -35,33 +38,40 @@ const RecruitersPage: React.FC = () => {
 
         <div className="p-6">
           <div className="space-y-4">
-            {[1, 2, 3].map((recruiter) => (
-              <div key={recruiter} className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">TalentScout Inc.</h3>
-                    <p className="mt-1 text-sm text-gray-500">Premier Recruiting Partner</p>
+            {recruiters.map((recruiter) => {
+              const successRate = Math.round((recruiter.hireCount / recruiter.submissionCount) * 100) || 0;
+              return (
+                <div key={recruiter.id} className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900">{recruiter.name}</h3>
+                      <p className="mt-1 text-sm text-gray-500">{recruiter.company}</p>
+                    </div>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                      successRate >= 40 ? 'bg-green-100 text-green-800' :
+                      successRate >= 20 ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-red-100 text-red-800'
+                    }`}>
+                      {successRate}% Success Rate
+                    </span>
                   </div>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    Active
-                  </span>
+                  <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-gray-500">Submissions</p>
+                      <p className="mt-1 font-medium text-gray-900">{recruiter.submissionCount}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Hires</p>
+                      <p className="mt-1 font-medium text-gray-900">{recruiter.hireCount}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-500">Success Rate</p>
+                      <p className="mt-1 font-medium text-gray-900">{successRate}%</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-4 grid grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <p className="text-gray-500">Submissions</p>
-                    <p className="mt-1 font-medium text-gray-900">24</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500">Hires</p>
-                    <p className="mt-1 font-medium text-gray-900">8</p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500">Success Rate</p>
-                    <p className="mt-1 font-medium text-gray-900">33%</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

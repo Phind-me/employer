@@ -1,7 +1,11 @@
 import React from 'react';
 import { Plus, Search, Filter } from 'lucide-react';
+import { useJobs } from '../../contexts/JobContext';
+import { calculateDaysRemaining } from '../../data/mockData';
 
 const JobsPage: React.FC = () => {
+  const { jobs } = useJobs();
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -35,26 +39,27 @@ const JobsPage: React.FC = () => {
 
         <div className="p-6">
           <div className="space-y-4">
-            {[1, 2, 3].map((job) => (
-              <div key={job} className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900">Senior Software Engineer</h3>
-                    <p className="mt-1 text-sm text-gray-500">Engineering • Remote</p>
+            {jobs.map((job) => {
+              const daysRemaining = calculateDaysRemaining(job.closingDate);
+              return (
+                <div key={job.id} className="border border-gray-200 rounded-lg p-4 hover:border-indigo-500 cursor-pointer transition-colors">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-lg font-medium text-gray-900">{job.title}</h3>
+                      <p className="mt-1 text-sm text-gray-500">{job.department} • {job.location}</p>
+                    </div>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {job.status === 'open' ? 'Active' : job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                    </span>
                   </div>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    Active
-                  </span>
+                  <div className="mt-4 flex items-center space-x-4 text-sm text-gray-500">
+                    <span>{job.candidateCount} candidates</span>
+                    <span>•</span>
+                    <span>Closes in {daysRemaining} days</span>
+                  </div>
                 </div>
-                <div className="mt-4 flex items-center space-x-4 text-sm text-gray-500">
-                  <span>5 candidates</span>
-                  <span>•</span>
-                  <span>Posted 2 days ago</span>
-                  <span>•</span>
-                  <span>Closes in 30 days</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
