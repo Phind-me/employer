@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DashboardLayout from './components/layout/DashboardLayout';
 import DashboardPage from './pages/DashboardPage';
 import JobsPage from './components/pages/JobsPage';
-import JobDetailsPage from './components/pages/JobDetailsPage';
+import JobFormPage from './components/pages/JobFormPage';
 import SubmissionsPage from './components/pages/SubmissionsPage';
 import CandidateDetailsPage from './components/pages/CandidateDetailsPage';
 import RecruitersPage from './components/pages/RecruitersPage';
 import RecruiterDetailsPage from './components/pages/RecruiterDetailsPage';
+import MessagesPage from './components/pages/MessagesPage';
 import SettingsPage from './components/pages/SettingsPage';
 import HelpPage from './components/pages/HelpPage';
 import { EmployerProvider } from './contexts/EmployerContext';
@@ -32,11 +33,14 @@ function App() {
                       <Routes>
                         <Route path="/" element={<DashboardPage />} />
                         <Route path="/jobs" element={<JobsPage />} />
-                        <Route path="/jobs/:id" element={<JobDetailsPage />} />
+                        <Route path="/jobs/new" element={<JobFormPage />} />
+                        <Route path="/jobs/:id" element={<JobFormPage />} />
                         <Route path="/submissions" element={<SubmissionsPage />} />
                         <Route path="/submissions/:id" element={<CandidateDetailsPage />} />
                         <Route path="/recruiters" element={<RecruitersPage />} />
                         <Route path="/recruiters/:id" element={<RecruiterDetailsPage />} />
+                        <Route path="/messages" element={<MessagesPage />} />
+                        <Route path="/messages/:id" element={<MessagesPage />} />
                         <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/help" element={<HelpPage />} />
                       </Routes>

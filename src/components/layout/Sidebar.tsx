@@ -1,39 +1,53 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Briefcase, 
   Users, 
   Building2, 
   Settings, 
-  HelpCircle 
+  HelpCircle,
+  Mail
 } from 'lucide-react';
+import { useMessages } from '../../contexts/MessageContext';
 
 interface SidebarItemProps {
   icon: React.ReactNode;
   text: string;
   to: string;
+  badge?: number;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to, badge }) => {
   return (
     <li>
       <NavLink
         to={to}
         className={({ isActive }) =>
-          `group px-3 py-2 rounded-md cursor-pointer flex items-center ${
+          `group px-3 py-2 rounded-md cursor-pointer flex items-center justify-between ${
             isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50'
           }`
         }
       >
-        <div className="mr-3">{icon}</div>
-        <span className="font-medium">{text}</span>
+        <div className="flex items-center">
+          <div className="mr-3">{icon}</div>
+          <span className="font-medium">{text}</span>
+        </div>
+        {badge !== undefined && badge > 0 && (
+          <span className="bg-red-100 text-red-600 px-2 py-0.5 rounded-full text-xs font-medium">
+            {badge}
+          </span>
+        )}
       </NavLink>
     </li>
   );
 };
 
 const Sidebar: React.FC = () => {
+  const { unreadCount } = useMessages();
+  const location = useLocation();
+  const isMessagesActive = location.pathname.startsWith('/messages');
+
   return (
     <aside className="bg-white border-r border-gray-200 w-64 h-screen flex-shrink-0 hidden md:block">
       <div className="h-full flex flex-col">
@@ -59,6 +73,12 @@ const Sidebar: React.FC = () => {
                 icon={<Building2 size={20} />} 
                 text="Recruiters" 
                 to="/recruiters"
+              />
+              <SidebarItem 
+                icon={<Mail size={20} />} 
+                text="Messages" 
+                to="/messages"
+                badge={unreadCount}
               />
               <SidebarItem 
                 icon={<Settings size={20} />} 

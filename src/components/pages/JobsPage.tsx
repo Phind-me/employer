@@ -25,7 +25,10 @@ const JobsPage: React.FC = () => {
           <h1 className="text-2xl font-semibold text-gray-900">Jobs</h1>
           <p className="mt-1 text-sm text-gray-500">Manage your open positions</p>
         </div>
-        <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+        <button 
+          onClick={() => navigate('/jobs/new')}
+          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+        >
           <Plus className="h-4 w-4 mr-2" />
           Post New Job
         </button>

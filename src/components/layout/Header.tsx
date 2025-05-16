@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Briefcase, BellRing, User, X, Check } from 'lucide-react';
 import { useMessages } from '../../contexts/MessageContext';
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   const [showMessages, setShowMessages] = useState(false);
   const { messages, unreadCount, markAsRead, markAllAsRead, deleteMessage } = useMessages();
 
@@ -33,13 +35,19 @@ const Header: React.FC = () => {
     return 'Just now';
   };
 
+  const handleMessageClick = (messageId: string) => {
+    setShowMessages(false);
+    markAsRead(messageId);
+    navigate(`/messages/${messageId}`);
+  };
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Briefcase className="h-8 w-8 text-indigo-600" />
-            <span className="ml-2 text-xl font-semibold text-gray-900">PhindMe</span>
+            <span className="ml-2 text-xl font-semibold text-gray-900">PhindMe Employer</span>
           </div>
           
           <div className="flex items-center">
@@ -82,8 +90,8 @@ const Header: React.FC = () => {
                           key={message.id}
                           className={`p-4 border-b border-gray-100 last:border-0 ${
                             !message.read ? 'bg-indigo-50' : ''
-                          }`}
-                          onClick={() => markAsRead(message.id)}
+                          } cursor-pointer`}
+                          onClick={() => handleMessageClick(message.id)}
                         >
                           <div className="flex items-start">
                             <div className="flex-shrink-0">
