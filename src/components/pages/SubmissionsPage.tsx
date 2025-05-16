@@ -98,7 +98,12 @@ const SubmissionsPage: React.FC = () => {
                   <div className="flex justify-between items-start mb-6">
                     <div className="space-y-4">
                       <div>
-                        <h3 className="text-lg font-medium text-gray-900">{submission.name}</h3>
+                        <h3 
+                          className="text-lg font-medium text-gray-900 hover:text-indigo-600 cursor-pointer"
+                          onClick={() => navigate(`/submissions/${submission.id}`)}
+                        >
+                          {submission.name}
+                        </h3>
                         <div className="mt-2 grid grid-cols-2 gap-4 text-sm text-gray-500">
                           <div className="flex items-center">
                             <Briefcase className="h-4 w-4 mr-2" />
@@ -143,12 +148,6 @@ const SubmissionsPage: React.FC = () => {
                           Update Status
                         </button>
                       )}
-                      <button 
-                        onClick={() => navigate(`/submissions/${submission.id}`)}
-                        className="text-sm text-gray-500 hover:text-gray-700"
-                      >
-                        View Details
-                      </button>
                     </div>
                   </div>
 
