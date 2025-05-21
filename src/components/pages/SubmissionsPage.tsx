@@ -4,6 +4,7 @@ import { Search, Filter, UserPlus, Clock, CheckCircle2, XCircle, Building2, Brie
 import { useSubmissions } from '../../contexts/SubmissionContext';
 import { useJobs } from '../../contexts/JobContext';
 import { useRecruiters } from '../../contexts/RecruiterContext';
+import StatusBar from '../shared/StatusBar';
 
 const SubmissionsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,8 +13,6 @@ const SubmissionsPage: React.FC = () => {
   const { recruiters } = useRecruiters();
   const [searchTerm, setSearchTerm] = useState('');
 
-  const stages = ['Submitted', 'Screening', 'Interview', 'Technical', 'Offer'];
-
   const getStageIndex = (status: string) => {
     switch (status) {
       case 'submitted': return 0;
@@ -21,15 +20,6 @@ const SubmissionsPage: React.FC = () => {
       case 'hired': return 4;
       case 'rejected': return -1;
       default: return 0;
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'hired': return 'bg-green-500';
-      case 'rejected': return 'bg-red-500';
-      case 'in-progress': return 'bg-blue-500';
-      default: return 'bg-gray-500';
     }
   };
 
@@ -163,34 +153,12 @@ const SubmissionsPage: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="relative mt-6">
-                    <div className="absolute top-2 left-0 w-full h-0.5 bg-gray-200"></div>
-                    <div className="relative flex justify-between">
-                      {stages.map((stage, index) => {
-                        const isCompleted = currentStage > index;
-                        const isCurrent = currentStage === index;
-                        const isRejected = submission.status === 'rejected';
-                        
-                        return (
-                          <div key={stage} className="flex flex-col items-center relative">
-                            <div 
-                              className={`w-4 h-4 rounded-full ${
-                                isRejected && isCurrent ? 'bg-red-500' :
-                                isCompleted || isCurrent ? getStatusColor(submission.status) : 'bg-gray-200'
-                              } relative z-10`}
-                            />
-                            <div className="mt-2 text-xs font-medium text-gray-500">{stage}</div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div 
-                      className={`absolute top-2 left-0 h-0.5 transition-all duration-500 ${getStatusColor(submission.status)}`}
-                      style={{ 
-                        width: `${currentStage >= 0 ? (currentStage / (stages.length - 1)) * 100 : 0}%`,
-                      }}
-                    />
-                  </div>
+                  <StatusBar 
+                    currentStage={currentStage} 
+                    status={submission.status} 
+                    className="mt-6"
+                    showDetails={false}
+                  />
                 </div>
               );
             })}

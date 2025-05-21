@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Briefcase, BellRing, User, X, Check } from 'lucide-react';
+import { Briefcase, BellRing, User, X, Check, MenuSquare } from 'lucide-react';
 import { useMessages } from '../../contexts/MessageContext';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  toggleSidebar: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
   const navigate = useNavigate();
   const [showMessages, setShowMessages] = useState(false);
   const { messages, unreadCount, markAsRead, markAllAsRead, deleteMessage } = useMessages();
@@ -46,7 +50,13 @@ const Header: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Briefcase className="h-8 w-8 text-indigo-600" />
+            <button
+              onClick={toggleSidebar}
+              className="p-2 rounded-md text-gray-500 hover:text-gray-600 hover:bg-gray-100 focus:outline-none"
+            >
+              <MenuSquare className="h-6 w-6" />
+            </button>
+            <Briefcase className="h-8 w-8 text-indigo-600 ml-2" />
             <span className="ml-2 text-xl font-semibold text-gray-900">PhindMe Employer</span>
           </div>
           

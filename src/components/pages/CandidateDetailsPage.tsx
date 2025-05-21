@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSubmissions } from '../../contexts/SubmissionContext';
 import { useJobs } from '../../contexts/JobContext';
 import { useRecruiters } from '../../contexts/RecruiterContext';
 import { ArrowLeft, Mail, Phone, MapPin, Building2, GraduationCap, Briefcase, Award, FileText, Link2, Github, Linkedin } from 'lucide-react';
+import StatusBar from '../shared/StatusBar';
 
 const CandidateDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { submissions } = useSubmissions();
+  const { submissions, updateSubmission } = useSubmissions();
   const { jobs } = useJobs();
   const { recruiters } = useRecruiters();
 
@@ -39,6 +40,36 @@ const CandidateDetailsPage: React.FC = () => {
       case 'intermediate': return 'bg-blue-100 text-blue-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const getStageIndex = (status: string) => {
+    switch (status) {
+      case 'submitted': return 0;
+      case 'in-progress': return Math.floor(Math.random() * 3) + 1; // Random stage between 1-3
+      case 'hired': return 5; // Now points to "Accepted" stage
+      case 'rejected': return Math.floor(Math.random() * 3) + 1; // Keep the stage where rejection occurred
+      default: return 0;
+    }
+  };
+
+  const handleStatusUpdate = (newStatus: string, reason?: string) => {
+    if (!candidate) return;
+    
+    const update: Partial<typeof candidate> = { status: newStatus };
+    if (reason) {
+      update.notes = [
+        ...(candidate.notes || []),
+        {
+          id: Math.random().toString(36).substr(2, 9),
+          content: reason,
+          createdAt: new Date().toISOString(),
+          createdBy: 'Hiring Manager',
+          type: 'feedback'
+        }
+      ];
+    }
+    
+    updateSubmission(candidate.id, update);
   };
 
   return (
@@ -116,6 +147,16 @@ const CandidateDetailsPage: React.FC = () => {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Status Bar */}
+        <div className="px-6 py-4 border-b border-gray-200">
+          <StatusBar 
+            currentStage={getStageIndex(candidate.status)} 
+            status={candidate.status}
+            showDetails={true}
+            onUpdateStatus={handleStatusUpdate}
+          />
         </div>
 
         <div className="grid grid-cols-3 gap-6 p-6">

@@ -7,7 +7,8 @@ import {
   Building2, 
   Settings, 
   HelpCircle,
-  Mail
+  Mail,
+  X
 } from 'lucide-react';
 import { useMessages } from '../../contexts/MessageContext';
 
@@ -49,7 +50,7 @@ const Sidebar: React.FC = () => {
   const isMessagesActive = location.pathname.startsWith('/messages');
 
   return (
-    <aside className="bg-white border-r border-gray-200 w-64 h-screen flex-shrink-0 hidden md:block">
+    <div className="bg-white border-r border-gray-200 h-full w-64">
       <div className="h-full flex flex-col">
         <div className="overflow-y-auto py-5 px-3 flex-grow">
           <nav className="mt-5">
@@ -100,7 +101,7 @@ const Sidebar: React.FC = () => {
           </div>
         </div>
       </div>
-    </aside>
+    </div>
   );
 };
 
